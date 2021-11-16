@@ -46,7 +46,10 @@ def parse_args():
         "--num-epochs", help="Number of epochs", type=int, default=100
     )
     training.add_argument(
-        "--save-path", help="Path to save models", type=Path, default=Path("models/")
+        "--save-path",
+        help="Path to save models",
+        type=Path,
+        default=Path("model_checkpoints/"),
     )
 
     return parser.parse_args()

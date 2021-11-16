@@ -46,6 +46,9 @@ def train(model, dataloader, num_epochs, loss_fn, optimizer, device):
 def evaluate(model, dataloader, metrics, device):
     model.eval()
 
+    for metric in metrics:
+        metric.initialize()
+
     with tqdm(dataloader, unit="batch") as pbar:
         for batch in pbar:
 
@@ -55,6 +58,10 @@ def evaluate(model, dataloader, metrics, device):
 
             preds = model(X)
 
+            probs = torch.sigmoid(preds)
+
             for metric in metrics:
-                metric(preds, y)
-    return
+                metric.log_batch(probs, y)
+
+    for metric in metrics:
+        metric.compute()
