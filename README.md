@@ -33,3 +33,17 @@ training:
   --save-path SAVE_PATH
                         Path to save models
 ```
+
+## Repo structure
+
+### Data
+Contains all the scripts used for data loading, transformation and dataset definition
+
+### Models
+Contains models and modules written using PyTorch
+
+### argument_parser.py
+Module used for parsing command line arguments
+
+### train.py
+Entrypoint used for training the model
