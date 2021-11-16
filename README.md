@@ -1,7 +1,7 @@
 # imdb-review-classifier
 
 ## Setup
-1. Download the dataset from [link](https://www.kaggle.com/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews, Kaggle IMDBDataset)
+1. Download the dataset from [Kaggle IMDBDataset](https://www.kaggle.com/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)
 2. Run `pip install -r requirements.txt`
 3. Run the script: 
 ```
