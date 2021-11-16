@@ -6,7 +6,7 @@ from torch.nn import BCEWithLogitsLoss
 
 from data.dataset import get_datasets, get_dataloaders, collate_fn
 from data.data_preprocessing import TfIdfPreprocessor
-from models.tfidf_model import TfIdfModel, train, eval
+from models.tfidf_model import TfIdfModel, train, evaluate
 from argument_parser import parse_args
 
 
@@ -60,6 +60,13 @@ def main():
     torch.save(
         model.state_dict(),
         args.save_path / f"model_{datetime.now().strftime('%Y_%m_%d-%I_%M_%S_%p')}.pth",
+    )
+
+    evaluate(
+        model=model,
+        dataloader=test_dataloader,
+        metrics=[],
+        device=device,
     )
 
 

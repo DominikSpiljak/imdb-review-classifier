@@ -21,6 +21,7 @@ class TfIdfModel(nn.Module):
 
 
 def train(model, dataloader, num_epochs, loss_fn, optimizer, device):
+    model.train()
 
     for epoch in range(num_epochs):
         with tqdm(dataloader, unit="batch") as pbar:
@@ -42,6 +43,18 @@ def train(model, dataloader, num_epochs, loss_fn, optimizer, device):
                 pbar.set_postfix(loss=loss.item())
 
 
-def eval(model, dataloader, device):
-    # TODO: Implement eval loop
-    pass
+def evaluate(model, dataloader, metrics, device):
+    model.eval()
+
+    with tqdm(dataloader, unit="batch") as pbar:
+        for batch in pbar:
+
+            X, y = batch
+            X = X.to(device)
+            y = y.to(device)
+
+            preds = model(X)
+
+            for metric in metrics:
+                metric(preds, y)
+    return
