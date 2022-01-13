@@ -133,3 +133,7 @@ imdb_dataset/
 
 # Model folders
 model_checkpoints/
+
+# Misc
+.vscode
+log.txt

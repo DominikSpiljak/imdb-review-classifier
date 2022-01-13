@@ -16,18 +16,53 @@ def parse_args():
         type=float,
         default=0.3,
     )
+    data.add_argument(
+        "--train-to-val-ratio",
+        help="Ratio of train to test size when splitting",
+        type=float,
+        default=0.1,
+    )
 
     model.add_argument(
-        "--tfidf-max-features",
+        "--vocabulary",
         help="Max features to be used during tfidf vectorization",
         type=int,
         default=20_000,
     )
+    model.add_argument(
+        "--embedding-size",
+        help="Embedding size to be used in rnn model",
+        type=int,
+        default=64,
+    )
+    model.add_argument(
+        "--hidden-size",
+        help="Hidden size to be used in rnn model",
+        type=int,
+        default=64,
+    )
+    model.add_argument(
+        "--bidirectional",
+        help="Whether to use bidirectinal rnn model",
+        action="store_true",
+    )
+    model.add_argument(
+        "--dropout",
+        help="Dropout for rnn model",
+        type=float,
+        default=0.3,
+    )
 
+    training.add_argument(
+        "--max-seq-len",
+        help="Maximum sequence length when training rnn",
+        type=int,
+        default=128,
+    )
     training.add_argument(
         "--device",
         help="Device for running the training",
-        choices=["cpu", "gpu"],
+        choices=["cpu", "cuda"],
         default="cpu",
     )
     training.add_argument(
@@ -37,7 +72,7 @@ def parse_args():
         "--num-workers",
         help="Number of workers for parallel data loading",
         type=int,
-        default=8,
+        default=4,
     )
     training.add_argument(
         "--learning-rate", help="Learning rate for training", type=float, default=1e-3
