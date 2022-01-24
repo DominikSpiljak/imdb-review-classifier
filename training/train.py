@@ -88,11 +88,15 @@ def train_model(model_name):
     print("Saving model state dict...")
     args.save_path.mkdir(parents=True, exist_ok=True)
 
+    id_ = datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")
+
     torch.save(
         model.state_dict(),
-        args.save_path
-        / f"{model_name}_model_{datetime.now().strftime('%Y_%m_%d-%I_%M_%S_%p')}.pth",
+        args.save_path / f"{model_name}_model_{id_}.pth",
     )
+
+    for preprocessor in preprocessors:
+        preprocessor.save(args.save_path, id_)
 
     evaluate(
         model=model,

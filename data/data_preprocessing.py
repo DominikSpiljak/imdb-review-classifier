@@ -2,6 +2,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 import string
 import torch
 import numpy as np
+import pickle
+import json
 
 
 class TfIdfPreprocessor:
@@ -27,6 +29,20 @@ class TfIdfPreprocessor:
             torch.LongTensor([matrix_coo.row.tolist(), matrix_coo.col.tolist()]),
             torch.FloatTensor(matrix_coo.data.astype(np.float)),
         )
+
+    def transform(self, input_set):
+        return torch.from_numpy(self.vectorizer.transform(input_set).toarray()).float()
+
+    def save(self, save_path, id_):
+        with open(save_path / f"tfidf_{id_}.pkl", "wb") as out:
+            pickle.dump(self.vectorizer, out)
+
+    @classmethod
+    def load_from_checkpoint(cls, checkpoint):
+        with open(checkpoint, "rb") as inp:
+            preprocessor = TfIdfPreprocessor()
+            preprocessor.vectorizer = pickle.load(inp)
+            return preprocessor
 
 
 class RNNPreprocessor:
@@ -61,3 +77,17 @@ class RNNPreprocessor:
             list(map(self.__lower_split_and_vectorize, val_set)),
             list(map(self.__lower_split_and_vectorize, test_set)),
         )
+
+    def transform(self, input_set):
+        return list(map(self.__lower_split_and_vectorize, input_set))
+
+    def save(self, save_path, id_):
+        with open(save_path / f"vocabulary_{id_}.json", "w") as out:
+            json.dump(self.word_to_ind, out)
+
+    @classmethod
+    def load_from_checkpoint(cls, checkpoint):
+        with open(checkpoint, "r") as inp:
+            preprocessor = RNNPreprocessor()
+            preprocessor.word_to_ind = json.load(inp)
+            return preprocessor
